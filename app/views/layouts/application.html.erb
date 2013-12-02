@@ -8,6 +8,20 @@
 </head>
 <body>
 
+<% if current_user %>
+	<%= link_to "Logout", destroy_user_session_path, method: :delete %>
+	<% if current_user.name.nil? %>
+		<%= link_to "Create your profile", edit_user_path(current_user) %>
+	<% else %>
+		<%= link_to current_user.name, user_path(current_user) %>
+	<% end %>
+<% else %>
+	<%= link_to "Login", new_user_session_path %>
+<% end %>
+
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
 <%= yield %>
 
 </body>

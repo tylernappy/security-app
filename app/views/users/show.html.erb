@@ -1,0 +1,13 @@
+<table>
+	<td>
+		<dt>
+			<div><%= @user.name %></div>
+			<div><%= @user.company %></div>
+			<div><%= @user.title %></div>
+			<div><%= @user.address %></div>
+		</dt>
+	</td>
+</table>
+
+<%= link_to "Back", events_path %>
+<%= link_to "Edit Profile", edit_user_path %>
