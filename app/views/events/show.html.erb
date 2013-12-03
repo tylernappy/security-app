@@ -11,6 +11,9 @@
 			<div><%= "Floor #{@event.floor}" %></div>
 			<div><%= @event.room %></div>
 		</dt>
+    <dt>
+      <div><%= image_tag(@image) %></div>
+    </dt>
 		<dt>
 			<div><% @guests.each do |guest| %></div>
 				<div> ----------- </div>

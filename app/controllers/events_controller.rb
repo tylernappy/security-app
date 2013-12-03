@@ -14,6 +14,8 @@ class EventsController < ApplicationController
 	def show
 		@event = find_event
 		@guests = @event.guests
+		@image = google_map_image(@event)
+		# debugger
 	end
 
 	def new
@@ -56,4 +58,11 @@ class EventsController < ApplicationController
 	def find_event
 		Event.find(params[:id])
 	end
+
+	def google_map_image event
+		address = event.address
+		address = address.tr(" ", "+")
+  	return "http://maps.googleapis.com/maps/api/staticmap?center=#{address}+New+York,NY&size=400x400&zoom=13&markers=color:blue%7C#{address}+New+York,NY&sensor=false"
+  end
+
 end
