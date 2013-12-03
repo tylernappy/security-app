@@ -26,4 +26,5 @@
 	<%= form.label :room %>
 	<%= form.text_field :room %>
 </div>
+<div><%= form.hidden_field :owner_id, :value => current_user.id %><br /></div>
 <%= link_to "Cancel", events_path %>

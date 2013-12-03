@@ -1,8 +1,17 @@
-<% @events.each do |event| %>
+<div> Events You Are Hosting </div>
+<% @events_hosting.each do |event| %>
 <div>
 	<%= link_to event.name, event%>
 	<%= link_to "Edit this event", edit_event_path(event) %>
 	<%= link_to "Delete this event", event, method: :delete, confirm: "Are you sure you want to delete this event?" %>
 </div>
 <% end %>
+
+<div> Events You Are Going To </div>
+<% @events_going_to.each do |event| %>
+<div>
+  <%= link_to event.name, event%>
+</div>
+<% end %>
+
 <%= link_to "Create new event", new_event_path %>

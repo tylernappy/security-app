@@ -1,6 +1,14 @@
 class EventsController < ApplicationController
 	def index
-		@events = Event.all
+		@events_hosting = []
+		@events_going_to = []
+		@all_events = Event.all
+		if user_signed_in? && @all_events.nil? == false #check to see if a user is signed in
+			@all_events.each do |event|
+				@events_hosting << event if current_user.id == event.owner_id
+				@events_going_to << event if event.guests.find_by_name(current_user.name) && @events_hosting.include?(event) == false
+			end
+		end
 	end
 
 	def show
@@ -9,14 +17,19 @@ class EventsController < ApplicationController
 	end
 
 	def new
-		@event = Event.new
+		if user_signed_in?
+			@event = Event.new
+		else
+			redirect_to new_user_session_path
+		end
 	end
 
 	def create
+
 		@event = Event.new(event_params)
 
 		@event.save
-		redirect_to events_path
+		redirect_to @event
 	end
 
 	def destroy
@@ -37,7 +50,7 @@ class EventsController < ApplicationController
 
 	private
 	def event_params
-		params.require(:event).permit(:name, :description, :floor, :room, :date, :time, :address)
+		params.require(:event).permit(:name, :description, :floor, :room, :date, :time, :address, :owner_id)
 	end
 
 	def find_event
