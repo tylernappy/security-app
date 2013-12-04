@@ -9,13 +9,20 @@ class EventsController < ApplicationController
 				@events_going_to << event if event.guests.find_by_name(current_user.name) && @events_hosting.include?(event) == false
 			end
 		end
+		@events = @events_hosting+@events_going_to
+		if user_signed_in?
+			if @events.length > 1
+				@image = google_map_image_multiple(@events)
+			else
+				@image = google_map_image_single(@events)
+			end
+		end
 	end
 
 	def show
 		@event = find_event
 		@guests = @event.guests
-		@image = google_map_image(@event)
-		# debugger
+		@image = google_map_image_single(@event)
 	end
 
 	def new
@@ -27,9 +34,7 @@ class EventsController < ApplicationController
 	end
 
 	def create
-
 		@event = Event.new(event_params)
-
 		@event.save
 		redirect_to @event
 	end
@@ -59,10 +64,64 @@ class EventsController < ApplicationController
 		Event.find(params[:id])
 	end
 
-	def google_map_image event
+	def google_map_image_single event
 		address = event.address
 		address = address.tr(" ", "+")
   	return "http://maps.googleapis.com/maps/api/staticmap?center=#{address}+New+York,NY&size=400x400&zoom=13&markers=color:blue%7C#{address}+New+York,NY&sensor=false"
   end
+  
+  def google_map_image_multiple events
+  	url_string = []
+  	letter = "A"
+  	events.each do |event|
+  		address = event.address.tr(" ", "+")+"+New+York,NY"
+  		url_string << "&markers=color:blue%7Clabel:#{letter}%7C#{address}"
+  		letter = letter.next
+  	end
+  	url_string = url_string.join
+  	return "http://maps.googleapis.com/maps/api/staticmap?center=Midtown+New+York,NY&size=400x400&zoom=11#{url_string}&sensor=false"
+  end
+
+  #return "http://maps.googleapis.com/maps/api/staticmap?center=#{address}+New+York,NY&size=400x400&zoom=13#{url_string}&sensor=false"
+
+  # def add_to_google_calendar event
+  # 	event = {
+  # 		'summary' => @event.description,
+  # 		'location' => @event.address,
+  # 		'start' => {
+  #   	'dateTime' => '2011-06-03T10:00:00.000-07:00'
+ 	# 		},
+  # 		'end' => {
+  #   	'dateTime' => '2011-06-03T10:25:00.000-07:00'
+  # 		},
+  # 		'attendees' => [
+  #   	{
+  #     'email' => 'tylernappy@gmail.com'
+  #   	},
+  #  		#...
+  # 		]
+		# }
+		# result = client.execute(:api_method => service.events.insert,
+  #                       :parameters => {'calendarId' => 'primary'},
+  #                       :body => [JSON.dump(event)],
+  #                       :headers => {'Content-Type' => 'application/json'})
+
+ 	# # event = {
+  # # 		'summary' => 'Appointment',
+  # # 		'location' => 'Somewhere',
+  # # 		'start' => {
+  # #   	'dateTime' => '2011-06-03T10:00:00.000-07:00'
+ 	# # 		},
+  # # 		'end' => {
+  # #   	'dateTime' => '2011-06-03T10:25:00.000-07:00'
+  # # 		},
+  # # 		'attendees' => [
+  # #   	{
+  # #     'email' => 'attendeeEmail'
+  # #   	},
+  # #  		#...
+  # # 		]
+		# # }
+  # end
 
 end

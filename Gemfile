@@ -11,6 +11,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'better_errors', :groups => [:development]
 gem 'aws-sdk'
 gem 'devise'
+gem 'google-api-client'
 
 group :production do 
 	gem 'pg'
