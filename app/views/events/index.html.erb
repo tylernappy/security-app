@@ -1,18 +1,29 @@
 <% if user_signed_in? %>
   <div> Events You Are Hosting </div>
-  <% @events_hosting.each do |event| %>
-  <div>
-  	<%= link_to event.name, event%>
-  	<%= link_to "Edit this event", edit_event_path(event) %>
-  	<%= link_to "Delete this event", event, method: :delete, confirm: "Are you sure you want to delete this event?" %>
-  </div>
+  <% @events_hosting.sort {|a,b| a.date <=> b.date }.each do |event| %>
+    <div>
+    	<%= link_to event.name, event%>
+      <%= event.date.strftime("%m/%d/%Y") %>
+    	<%= link_to "Edit this event", edit_event_path(event) %>
+    	<%= link_to "Delete this event", event, method: :delete, confirm: "Are you sure you want to delete this event?" %>
+    </div>
   <% end %>
 
   <div> Events You Are Going To </div>
-  <% @events_going_to.each do |event| %>
-  <div>
-    <%= link_to event.name, event%>
-  </div>
+  <% @events_going_to.sort {|a,b| a.date <=> b.date }.each do |event| %>
+    <div>
+      <%= link_to event.name, event%>
+    </div>
+  <% end %>
+
+  <div>Today's Events</div>
+  <% @events_today.sort {|a,b| a.time <=> b.time }.each do |event| %>
+    <div>
+      <%= @letter %>
+      <%= link_to event.name, event %>
+      <%= "at #{event.time.strftime("%H:%M")}" %>
+      <% @letter = @letter.next %>
+    </div>
   <% end %>
 
   <div><%= image_tag(@image) %></div>
@@ -20,5 +31,5 @@
   <%= link_to "Create new event", new_event_path %>
 
 <% else %>
-  <div>Sign in to get started</div>  
+  <div>Sign in to get started!</div>  
 <% end %>

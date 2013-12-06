@@ -30,7 +30,7 @@
 	</td>
 </table>
 
-<%= link_to "Events I'm going to", events_path %>
+<%= link_to "All events I'm going to", events_path %>
 <%= link_to "Delete this event", event_path(@event), method: :delete, confirm: "Are you sure you want to delete this event?" if current_user.id == @event.owner_id %>
 <%= link_to "Edit this event", edit_event_path if current_user.id == @event.owner_id %>
 <%= link_to "Add guests to event", new_event_guest_path(@event) if current_user.id == @event.owner_id %>
