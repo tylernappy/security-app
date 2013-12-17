@@ -13,6 +13,7 @@
 <div>
 	<%= form.label :date %>
 	<%= form.date_field :date %>
+    <%= form.date_field :date, :embedded => true, :valid_date_check => "( (date.stripTime() < ((new Date()).stripTime()).setMonth(new Date().getMonth() + 1))", :year_range => [Time.now.year, Time.now.year], :time => false %>
 </div>
 <div>
 	<%= form.label :time %>
