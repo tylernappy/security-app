@@ -20,11 +20,10 @@
 <% end %>
 
 <div> Search by date </div>
-
-  <p>
-    <%= date_field_tag :search, params[:search] %>
-    <%= submit_tag "Search", :date => nil %>
-  </p>
+<p>
+  <%= date_field_tag :search, params[:search] %>
+  <%= submit_tag "Search", :date => nil %>
+</p>
 
 
 <p class="notice"><%= notice %></p>

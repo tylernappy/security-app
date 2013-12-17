@@ -1,4 +1,8 @@
 class EventsController < ApplicationController
+	def home
+
+	end
+
 	def index
 		@events_hosting = []
 		@events_going_to = []
@@ -12,7 +16,7 @@ class EventsController < ApplicationController
 		@events = @events_hosting+@events_going_to
 		@events_today = events_today(@events)
 		@todays_date = Time.now.strftime("%m/%d/%Y") 
-		if user_signed_in?
+		if user_signed_in? && @events.length != 0
 			if @events.length > 1
 				@image = google_map_image_multiple(@events_today)
 			else
@@ -89,9 +93,13 @@ class EventsController < ApplicationController
 
 	def events_organizer events
 		events_array = [Array.new, Array.new]
+		todays_date = Time.now.strftime("%m/%d/%Y")
  		events.each do |event|
-			events_array[0] << event if current_user.id == event.owner_id #hosting
-			events_array[1] << event if event.guests.find_by_name(current_user.name) && events_array[0].include?(event) == false #going to
+			event_date = event.date.strftime("%m/%d/%Y")
+			if event_date >= todays_date #will not accept dates that have already passed
+				events_array[0] << event if current_user.id == event.owner_id #hosting
+				events_array[1] << event if event.guests.find_by_name(current_user.name) && events_array[0].include?(event) == false #going to
+			end
 		end
 		return events_array
 	end

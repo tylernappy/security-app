@@ -36,6 +36,50 @@ ActiveRecord::Schema.define(version: 20131202215932) do
     t.integer  "event_id"
   end
 
+  create_table "owners", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "owners", ["email"], name: "index_owners_on_email", unique: true, using: :btree
+  add_index "owners", ["reset_password_token"], name: "index_owners_on_reset_password_token", unique: true, using: :btree
+
+  create_table "reservations", force: true do |t|
+    t.string   "email"
+    t.text     "reservation_short_message"
+    t.string   "restaurant_for_reservation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "restaurant_id"
+    t.date     "reservation_date"
+    t.time     "reservation_time"
+  end
+
+  create_table "restaurants", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image"
+    t.string   "menu"
+    t.integer  "owner_id"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "phone"
+  end
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -55,7 +99,7 @@ ActiveRecord::Schema.define(version: 20131202215932) do
     t.string   "address"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
