@@ -1,4 +1,5 @@
 <%= form_for(@event) do |form| %>
 	<%= render form %>
-	<%= form.submit "Update event" %>
+	<%= form.submit "Update event", :class => 'btn btn-success' %>
+  <%= link_to 'Cancel', events_path, :class => 'btn btn-danger' %>
 <% end %>

@@ -1,35 +1,70 @@
 <% if user_signed_in? %>
-  <div> Events You Are Hosting </div>
-  <% @events_hosting.sort {|a,b| a.date <=> b.date }.each do |event| %>
-    <div>
-    	<%= link_to event.name, event%>
-      <%= event.date.strftime("%m/%d/%Y") %>
-    	<%= link_to "Edit this event", edit_event_path(event) %>
-    	<%= link_to "Delete this event", event, method: :delete, confirm: "Are you sure you want to delete this event?" %>
-    </div>
-  <% end %>
 
-  <div> Events You Are Going To </div>
-  <% @events_going_to.sort {|a,b| a.date <=> b.date }.each do |event| %>
-    <div>
-      <%= link_to event.name, event%>
-    </div>
-  <% end %>
+  <!-- Today's Events -->
+  <div class="container span4">
 
-  <div>Today's Events</div>
-  <% @events_today.sort {|a,b| a.time <=> b.time }.each do |event| %>
-    <div>
-      <%= @letter %>
-      <%= link_to event.name, event %>
-      <%= "at #{event.time.strftime("%H:%M")}" %>
-      <% @letter = @letter.next %>
-    </div>
-  <% end %>
+    <h3>Today's Events</h3>
+    <% if @events_today.empty? %>
+      <div><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=Midtown+New+York,NY&size=400x400&zoom=12&sensor=false") %></div>
+      <h5>You are not going to any events today</h5>
+    <% else %>
+      <div><%= image_tag(@image) %></div>
+      <br>
+      <% @events_today.sort {|a,b| a.time <=> b.time }.each do |event| %>
+        <div class="row">
+          <div class="span4">
+            <div class="row">
+              <div class="span1" id="letter"><%= @letter %></div>
+              <div class="span2"><%= link_to event.name, event, :class => 'btn btn-link' %></div>
+              <div class="span1"><%= event.time.strftime("%I:%M %p") %></div>
+              <% @letter = @letter.next %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
 
-  <div><%= image_tag(@image) %></div>
+  </div>
+  
 
-  <%= link_to "Create new event", new_event_path %>
+  <!-- Events You're Going To -->
+  <div class="container span4">
+    <h3> Events You're Invited To </h3>
+    <% if @events_going_to.empty? %>
+      <h5>You are not going to any events</h5>
+    <% else %>
+      <% @events_going_to.sort {|a,b| a.date <=> b.date }.each do |event| %>
+        <div class="row">
+          <div class="span2"><%= link_to event.name, event%></div>
+          <div class="span2"><%= event.date.strftime("%m/%d/%Y") %></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Events You're Hosting -->
+  <div class="container span4">
+    <h3>Events You're Hosting</h3> 
+    <%if @events_hosting.empty? %>
+      <h5>You are not hosting any events</h5>
+    <% else %>  
+      <% @events_hosting.sort {|a,b| a.date <=> b.date }.each do |event| %>
+        <div class="row">
+          <div class="span2">
+            <%= link_to event.name, event, :class => 'btn btn-link' %>
+          </div>
+          <div class="span2">
+            <div class="btn-group">
+              <%= link_to "Edit event", edit_event_path(event), :class => 'btn btn-mini btn-primary' %>
+              <%= link_to "Delete event", event, :class => 'btn btn-mini btn-danger', method: :delete, confirm: "Are you sure you want to delete this event?" %>
+            </div>
+          </div>
+        </div>        
+      <% end %>
+    <% end %>  
+  </div>
+
 
 <% else %>
-  <div>Sign in to get started!</div>  
+  <h1>Sign in to get started!</h1>  
 <% end %>

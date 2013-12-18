@@ -1,5 +1,5 @@
 <%= form_for([@event, @guest]) do |form| %>
 	<%= render form %>
-	<%= form.submit "Add guest" %>
+	<%= form.submit "Add Guest", :class => 'btn btn-success' %>
+  <%= link_to "Finshed adding guests", @event, :class => 'btn' %>
 <% end %>
-<%= link_to "Finshed adding guests", @event %>

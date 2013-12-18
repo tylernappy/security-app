@@ -12,8 +12,7 @@
 </div>
 <div>
 	<%= form.label :date %>
-	<%= form.date_field :date %>
-    <%= form.date_field :date, :embedded => true, :valid_date_check => "( (date.stripTime() < ((new Date()).stripTime()).setMonth(new Date().getMonth() + 1))", :year_range => [Time.now.year, Time.now.year], :time => false %>
+  <%= form.date_field :date %>
 </div>
 <div>
 	<%= form.label :time %>
@@ -28,4 +27,4 @@
 	<%= form.text_field :room %>
 </div>
 <div><%= form.hidden_field :owner_id, :value => current_user.id %><br /></div>
-<%= link_to "Cancel", events_path %>
+

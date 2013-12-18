@@ -1,36 +1,80 @@
+<% if user_signed_in? %>
+
+  <div class="container span4">
+    <h3><%= @event.name %></h3>
+    <%= image_tag(@image) %>
+  </div>
+
+  <div class="container span4">
+    <h3>Event Details</h3>
+    <div class="row">
+      <div class="span2" id="letter">Why</div>
+      <div class="span2">
+        <%= @event.description %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span2" id="letter">Where</div>
+      <div class="span2">
+        <%= @event.address %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span2" id="letter">Date</div>
+      <div class="span2">
+        <%= @event.date.strftime("%m/%d/%Y") %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span2" id="letter">When</div>
+      <div class="span2">
+        <%= @event.time.strftime("%H:%M") %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span2" id="letter">Floor</div>
+      <div class="span2">
+        <%= "Floor #{@event.floor}" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span2" id="letter">Room</div>
+      <div class="span2">
+        <%= @event.room %>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container span4">
+    <h3>Who's going</h3>
+    <% if @guests.empty? %>
+      <h5>No guests currently attending</h5>
+    <% else %>
+      <% @guests.each do |guest| %>
+        <div class="row">
+          <div class="span2"><%= guest.name %></div>
+          <div class ="span2"><%= link_to "Delete guest", event_guest_path(@event, guest), :class => 'btn btn-danger btn-mini', method: :delete if current_user.id == @event.owner_id %></div>
+        </div>
+      <% end %>
+    <% end %>
+    <br>
+    <%= link_to "Add guests to event", new_event_guest_path(@event), :class => 'btn' if current_user.id == @event.owner_id %>
+  </div>
 
 
-<table>
-	<td>
-		<dt>
-			<div><%= @event.name %></div>
-			<div><%= @event.description %></div>
-			<div><%= @event.address %></div>
-			<div><%= @event.date.strftime("%m/%d/%Y") %></div>
-			<div><%= @event.time.strftime("%H:%M") %></div>
-			<div><%= "Floor #{@event.floor}" %></div>
-			<div><%= @event.room %></div>
-		</dt>
-    <dt>
-      <div><%= image_tag(@image) %></div>
-    </dt>
-		<dt>
-			<div><% @guests.each do |guest| %></div>
-				<div> ----------- </div>
-				<div>
-					<%= guest.name %>
-					<%= link_to "Delete guest", event_guest_path(@event, guest), method: :delete if current_user.id == @event.owner_id %>
-				</div>
-				<div><%= guest.email %></div>
-				<div><%= guest.phone %></div>
-				<div><%= guest.company %></div>
-				<div> ----------- </div>
-			<% end %>
-		</dt>
-	</td>
-</table>
+<% else %>
+  <h1>Sign in to get started!</h1> 
+<% end %>
 
-<%= link_to "All events I'm going to", events_path %>
-<%= link_to "Delete this event", event_path(@event), method: :delete, confirm: "Are you sure you want to delete this event?" if current_user.id == @event.owner_id %>
-<%= link_to "Edit this event", edit_event_path if current_user.id == @event.owner_id %>
-<%= link_to "Add guests to event", new_event_guest_path(@event) if current_user.id == @event.owner_id %>
+<div class="container span12">
+<br>
+  <%= link_to "All events I'm going to", events_path, :class => "btn" %>
+  <%= link_to "Delete this event", event_path(@event), :class => 'btn btn-danger', method: :delete, confirm: "Are you sure you want to delete this event?" if current_user.id == @event.owner_id %>
+  <%= link_to "Edit this event", edit_event_path, :class => 'btn btn-primary' if current_user.id == @event.owner_id %>
+</div>

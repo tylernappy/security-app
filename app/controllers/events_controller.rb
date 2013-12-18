@@ -16,7 +16,7 @@ class EventsController < ApplicationController
 		@events = @events_hosting+@events_going_to
 		@events_today = events_today(@events)
 		@todays_date = Time.now.strftime("%m/%d/%Y") 
-		if user_signed_in? && @events.length != 0
+		if user_signed_in? && @events_today.length != 0
 			if @events.length > 1
 				@image = google_map_image_multiple(@events_today)
 			else
@@ -88,7 +88,7 @@ class EventsController < ApplicationController
   		letter = letter.next
   	end
   	url_string = url_string.join
-  	return "http://maps.googleapis.com/maps/api/staticmap?center=Midtown+New+York,NY&size=400x400&zoom=11#{url_string}&sensor=false"
+  	return "http://maps.googleapis.com/maps/api/staticmap?center=Midtown+New+York,NY&size=400x400&zoom=12#{url_string}&sensor=false"
   end
 
 	def events_organizer events

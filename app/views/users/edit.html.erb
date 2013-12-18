@@ -1,4 +1,5 @@
 <%= form_for(@user) do |form| %>
 	<%= render form %>
-	<%= form.submit "Update user profile" %>
+  <%= form.submit "Update user profile", :class => 'btn btn-success' %>
+  <%= link_to 'Cancel', user_path(@user), :class => 'btn btn-danger' %>
 <% end %>
