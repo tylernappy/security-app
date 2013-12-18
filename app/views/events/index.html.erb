@@ -4,11 +4,10 @@
   <div class="container span4">
 
     <h3>Today's Events</h3>
+    <div><%= image_tag(@image) %></div>
     <% if @events_today.empty? %>
-      <div><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=Midtown+New+York,NY&size=400x400&zoom=12&sensor=false") %></div>
       <h5>You are not going to any events today</h5>
     <% else %>
-      <div><%= image_tag(@image) %></div>
       <br>
       <% @events_today.sort {|a,b| a.time <=> b.time }.each do |event| %>
         <div class="row">
@@ -31,7 +30,7 @@
   <div class="container span4">
     <h3> Events You're Invited To </h3>
     <% if @events_going_to.empty? %>
-      <h5>You are not going to any events</h5>
+      <h5>You are currently not invited to any events</h5>
     <% else %>
       <% @events_going_to.sort {|a,b| a.date <=> b.date }.each do |event| %>
         <div class="row">

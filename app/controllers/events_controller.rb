@@ -22,6 +22,8 @@ class EventsController < ApplicationController
 			else
 				@image = google_map_image_single(@events_today)
 			end
+    else
+      @image = "http://maps.googleapis.com/maps/api/staticmap?center=Midtown+New+York,NY&size=400x400&zoom=12&sensor=false"
 		end
 
 		@letter = "A"
@@ -74,7 +76,11 @@ class EventsController < ApplicationController
 	end
 
 	def google_map_image_single event
-		address = event.address
+		if event[0].nil?
+      address = event.address
+    else
+      address = event[0].address
+    end
 		address = address.tr(" ", "+")
   	return "http://maps.googleapis.com/maps/api/staticmap?center=#{address}+New+York,NY&size=400x400&zoom=15&markers=color:blue%7C#{address}+New+York,NY&sensor=false"
   end
