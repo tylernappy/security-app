@@ -7,7 +7,7 @@ class EventsController < ApplicationController
 		@events_hosting = []
 		@events_going_to = []
 		@all_events = Event.all
-		if user_signed_in? && @all_events.nil? == false #check to see if a user is signed in
+		if user_signed_in? && @all_events.empty? == false #check to see if a user is signed in
 			events_array = events_organizer(@all_events)
 			@events_hosting = events_array[0]
 			@events_going_to = events_array[1]
