@@ -2,6 +2,7 @@
 	<td>
 		<dt>
 			<div><%= @user.name %></div>
+      <div><%= @user.email %></div>
 			<div><%= @user.company %></div>
 			<div><%= @user.title %></div>
 			<div><%= @user.address %></div>
@@ -10,4 +11,4 @@
 </table>
 
 <%= link_to "Back", events_path, :class => 'btn' %>
-<%= link_to "Edit Profile", edit_user_path, :class => 'btn btn-primary' %>
+<%= link_to "Edit Profile", edit_user_path, :class => 'btn btn-primary' if current_user %>
